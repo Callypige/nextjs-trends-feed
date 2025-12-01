@@ -44,6 +44,45 @@ npm run build
 npm run start
 ```
 
+### Docker Deployment
+
+#### Using Docker Compose (Recommended)
+
+1. Build and start the container:
+```bash
+docker-compose up -d
+```
+
+2. View logs:
+```bash
+docker-compose logs -f
+```
+
+3. Stop the container:
+```bash
+docker-compose down
+```
+
+#### Using Docker CLI
+
+1. Build the image:
+```bash
+docker build -t nextjs-regulatory-feed .
+```
+
+2. Run the container:
+```bash
+docker run -p 3000:3000 --name regulatory-feed nextjs-regulatory-feed
+```
+
+3. Stop and remove:
+```bash
+docker stop regulatory-feed
+docker rm regulatory-feed
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000)
+
 ## Technical Choices
 
 ### Framework & Language
@@ -63,6 +102,11 @@ npm run start
 ### Data Management
 - **Mock Data**: Currently uses in-memory mock data for demonstration
 - **Type-Safe Models**: TypeScript interfaces for Subject and Tweet entities
+
+### Deployment
+- **Docker**: Multi-stage build for optimized production images
+- **Docker Compose**: Simplified orchestration and deployment
+- **Standalone Output**: Next.js standalone mode for minimal Docker image size
 
 ## Project Structure
 
@@ -95,8 +139,9 @@ src/
 
 ### Current Limitations
 - **Mock Data**: Uses static mock data; no real API integration
-- **Google Trends iframe**: Limited customization, may be blocked by browser extensions
+- **Google Trends Embedding**: Google blocks iframe embedding via X-Frame-Options headers. Solution implemented: visual card with direct link to Google Trends (opens in new tab). This is a technical limitation imposed by Google, not a code issue.
 - **No Backend**: Pure frontend application without data persistence
+- **Avatar Images**: Using generated initials instead of external images for better performance and reliability
 
 ### Potential Improvements
 - **Real Twitter/X API Integration**: Fetch real tweets using Twitter API v2
