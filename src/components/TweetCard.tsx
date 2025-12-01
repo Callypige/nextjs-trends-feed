@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Heart, Repeat2 } from "lucide-react";
 import { Tweet, formatRelativeTime } from "@/data/subjects";
-import Image from "next/image";
+import { getInitials, getColorFromString } from "@/lib/utils";
 
 interface TweetCardProps {
   tweet: Tweet;
@@ -34,14 +34,12 @@ export function TweetCard({ tweet }: TweetCardProps) {
       <CardContent className="p-4">
         <div className="flex gap-3">
           {/* Avatar */}
-          <div className="flex-shrink-0">
-            <Image
-              src={tweet.authorAvatar}
-              alt={`${tweet.authorName} avatar`}
-              width={48}
-              height={48}
-              className="rounded-full bg-zinc-100 dark:bg-zinc-800"
-            />
+          <div className="shrink-0">
+            <div
+              className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getColorFromString(tweet.authorUsername)}`}
+            >
+              {getInitials(tweet.authorName)}
+            </div>
           </div>
 
           {/* Content */}
@@ -60,7 +58,7 @@ export function TweetCard({ tweet }: TweetCardProps) {
             </div>
 
             {/* Tweet content */}
-            <p className="mt-2 text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap break-words">
+            <p className="mt-2 text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap wrap-break-word">
               {tweet.content}
             </p>
 
