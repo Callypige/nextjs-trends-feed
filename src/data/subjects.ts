@@ -305,10 +305,22 @@ export function getSubjectBySlug(slug: string): Subject | undefined {
 }
 
 /**
- * Get tweets for a subject
+ * Get tweets for a subject, sorted by engagement (likes + retweets)
  */
 export function getTweetsForSubject(slug: string): Tweet[] {
-  return tweetsBySubject[slug] || [];
+  const tweets = tweetsBySubject[slug] || [];
+  return sortTweetsByEngagement(tweets);
+}
+
+/**
+ * Sort tweets by engagement (likes + retweets) in descending order
+ */
+export function sortTweetsByEngagement(tweets: Tweet[]): Tweet[] {
+  return [...tweets].sort((a, b) => {
+    const engagementA = a.likes + a.retweets;
+    const engagementB = b.likes + b.retweets;
+    return engagementB - engagementA;
+  });
 }
 
 /**

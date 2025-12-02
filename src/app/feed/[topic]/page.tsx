@@ -4,7 +4,7 @@ import { ArrowLeft, MessageCircle } from "lucide-react";
 import { getSubjectBySlug, getTweetsForSubject, subjects } from "@/data/subjects";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TweetCard } from "@/components/TweetCard";
+import { PaginatedTweetList } from "@/components/PaginatedTweetList";
 import { GoogleTrendsEmbed } from "@/components/GoogleTrendsEmbed";
 
 interface FeedPageProps {
@@ -98,11 +98,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
           </h2>
           
           {tweets.length > 0 ? (
-            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-              {tweets.map((tweet) => (
-                <TweetCard key={tweet.id} tweet={tweet} />
-              ))}
-            </div>
+            <PaginatedTweetList tweets={tweets} tweetsPerPage={5} />
           ) : (
             /* Empty state */
             <div className="text-center py-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900">
