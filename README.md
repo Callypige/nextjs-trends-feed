@@ -1,6 +1,6 @@
 # Regulatory Feed
 
-Application Next.js pour suivre les discussions réglementaires sur les réseaux sociaux (AI Act, Data Act, DMA, GDPR...).
+Application Next.js pour suivre les discussions réglementaires sur les réseaux sociaux (Reddit) sur les technologies emergeantes (Python, Javascript, FastAPI).
 
 ## 🚀 Installation rapide
 
@@ -33,9 +33,9 @@ docker run -p 3000:3000 regulatory-feed
 
 ## 📋 Fonctionnalités
 
-- **Page /subjects** : Liste des sujets réglementaires avec nombre de tweets et score de popularité
-- **Page /feed/[topic]** : Flux de tweets populaires + Google Trends pour un sujet
-- **Pagination** : Navigation par pages (5 tweets/page)
+- **Page /subjects** : Liste des sujets réglementaires Reddit 
+- **Page /feed/[topic]** : Flux de Redditpopulaires 
+- **Pagination** : Navigation par pages (5 reddits/page)
 - **Tri automatique** : Tweets triés par engagement (likes + retweets)
 - **UI moderne** : shadcn/ui + Tailwind CSS + Dark mode
 
