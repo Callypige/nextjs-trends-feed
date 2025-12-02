@@ -1,157 +1,98 @@
 # Regulatory Feed
 
-A Next.js web application for tracking regulatory discussions and trends across key topics like AI Act, Data Act, Digital Markets Act, GDPR, and more.
+Application Next.js pour suivre les discussions réglementaires sur les réseaux sociaux (AI Act, Data Act, DMA, GDPR...).
 
-## Features
+## 🚀 Installation rapide
 
-- **📋 Subjects List** (`/subjects`): Browse regulatory subjects with tweet counts and popularity scores
-- **📰 Topic Feed** (`/feed/[topic]`): View popular tweets and Google Trends for a specific subject
-- **📊 Google Trends Integration**: Embedded trends dashboard for each regulatory topic
-- **🎨 Modern UI**: Built with shadcn/ui components for a clean, accessible interface
-- **🌙 Dark Mode**: Automatic theme switching based on system preferences
+**Prérequis** : Node.js 18+ et npm 8+
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- npm 8+
-
-### Installation
-
-1. Clone the repository:
 ```bash
+# 1. Cloner le repo
 git clone https://github.com/Callypige/nextjs-regulatory-feed.git
 cd nextjs-regulatory-feed
-```
 
-2. Install dependencies:
-```bash
+# 2. Installer les dépendances
 npm install
-```
 
-3. Start the development server:
-```bash
+# 3. Lancer l'application
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+➡️ Ouvrir [http://localhost:3000](http://localhost:3000)
 
-### Build for Production
+## 🐳 Docker (optionnel)
 
 ```bash
-npm run build
-npm run start
-```
-
-### Docker Deployment
-
-#### Using Docker Compose (Recommended)
-
-1. Build and start the container:
-```bash
+# Avec Docker Compose
 docker-compose up -d
+
+# OU avec Docker CLI
+docker build -t regulatory-feed .
+docker run -p 3000:3000 regulatory-feed
 ```
 
-2. View logs:
-```bash
-docker-compose logs -f
-```
+## 📋 Fonctionnalités
 
-3. Stop the container:
-```bash
-docker-compose down
-```
+- **Page /subjects** : Liste des sujets réglementaires avec nombre de tweets et score de popularité
+- **Page /feed/[topic]** : Flux de tweets populaires + Google Trends pour un sujet
+- **Pagination** : Navigation par pages (5 tweets/page)
+- **Tri automatique** : Tweets triés par engagement (likes + retweets)
+- **UI moderne** : shadcn/ui + Tailwind CSS + Dark mode
 
-#### Using Docker CLI
+## 🛠️ Choix techniques
 
-1. Build the image:
-```bash
-docker build -t nextjs-regulatory-feed .
-```
+**Framework**
+- **Next.js 16 (App Router)** : SSG, routing file-based, performances optimales
+- **TypeScript** : Sécurité des types
 
-2. Run the container:
-```bash
-docker run -p 3000:3000 --name regulatory-feed nextjs-regulatory-feed
-```
+**UI/UX**
+- **shadcn/ui** : Composants accessibles et customisables
+- **Tailwind CSS 4** : Styling rapide et cohérent
+- **Lucide React** : Icônes modernes
 
-3. Stop and remove:
-```bash
-docker stop regulatory-feed
-docker rm regulatory-feed
-```
+**Architecture**
+- **Server Components** : Rendu côté serveur par défaut
+- **Client Components** : Uniquement pour l'interactivité (pagination)
+- **Static Generation** : Pages pré-rendues au build
+- **Composants réutilisables** : SubjectCard, TweetCard, PaginatedTweetList
 
-The application will be available at [http://localhost:3000](http://localhost:3000)
+**Données**
+- Mock data TypeScript pour la démo (pas d'API externe requise)
 
-## Technical Choices
-
-### Framework & Language
-- **Next.js 16 (App Router)**: Chosen for its excellent SEO, server-side rendering, and modern React features
-- **TypeScript**: Ensures type safety and better developer experience
-
-### Styling & UI
-- **Tailwind CSS 4**: Utility-first CSS for rapid, consistent styling
-- **shadcn/ui components**: High-quality, accessible UI components (Card, Button, Badge)
-- **Lucide React**: Modern, consistent icon library
-
-### Architecture
-- **App Router**: Leverages Next.js 14+ file-based routing with layouts
-- **Static Generation (SSG)**: Pre-renders pages at build time for optimal performance
-- **Component-Based**: Reusable components for subjects, tweets, and trends
-
-### Data Management
-- **Mock Data**: Currently uses in-memory mock data for demonstration
-- **Type-Safe Models**: TypeScript interfaces for Subject and Tweet entities
-
-### Deployment
-- **Docker**: Multi-stage build for optimized production images
-- **Docker Compose**: Simplified orchestration and deployment
-- **Standalone Output**: Next.js standalone mode for minimal Docker image size
-
-## Project Structure
+## 📂 Structure du projet
 
 ```
 src/
 ├── app/
-│   ├── page.tsx              # Home (redirects to /subjects)
-│   ├── layout.tsx            # Root layout
-│   ├── globals.css           # Global styles
-│   ├── subjects/
-│   │   └── page.tsx          # Subjects list page
-│   └── feed/
-│       └── [topic]/
-│           └── page.tsx      # Dynamic feed page
+│   ├── subjects/page.tsx          # Page liste des sujets
+│   └── feed/[topic]/page.tsx      # Page détail d'un sujet
 ├── components/
-│   ├── ui/                   # shadcn/ui components
-│   │   ├── card.tsx
-│   │   ├── button.tsx
-│   │   └── badge.tsx
-│   ├── SubjectCard.tsx       # Subject card component
-│   ├── TweetCard.tsx         # Tweet card component
-│   └── GoogleTrendsEmbed.tsx # Trends iframe embed
+│   ├── ui/                        # Composants shadcn/ui
+│   ├── SubjectCard.tsx            # Card d'un sujet
+│   ├── TweetCard.tsx              # Card d'un tweet
+│   ├── PaginatedTweetList.tsx     # Liste paginée de tweets
+│   └── GoogleTrendsEmbed.tsx      # Lien Google Trends
 ├── data/
-│   └── subjects.ts           # Mock data and utilities
+│   └── subjects.ts                # Données mockées
 └── lib/
-    └── utils.ts              # Utility functions (cn helper)
+    └── utils.ts                   # Fonctions utilitaires
 ```
 
-## Limitations & Future Improvements
+## ⚠️ Limitations & améliorations possibles
 
-### Current Limitations
-- **Mock Data**: Uses static mock data; no real API integration
-- **Google Trends Embedding**: Google blocks iframe embedding via X-Frame-Options headers. Solution implemented: visual card with direct link to Google Trends (opens in new tab). This is a technical limitation imposed by Google, not a code issue.
-- **No Backend**: Pure frontend application without data persistence
-- **Avatar Images**: Using generated initials instead of external images for better performance and reliability
+**Limitations actuelles**
+- Données mockées (pas d'API réelle Twitter/X)
+- Google Trends en lien externe (Google bloque l'iframe embedding)
+- Pas de persistence des données
 
-### Potential Improvements
-- **Real Twitter/X API Integration**: Fetch real tweets using Twitter API v2
-- **Backend Service**: Add API routes for data management and caching
-- **Search Functionality**: Allow users to search tweets and subjects
-- **Infinite Scroll**: Implement lazy loading for tweets
-- **User Authentication**: Enable personalized feeds and saved topics
-- **Real-time Updates**: WebSocket integration for live tweet updates
-- **Analytics Dashboard**: Enhanced trends visualization with charts
+**Améliorations futures**
+- Intégration API Twitter/X v2
+- Backend avec cache et base de données
+- Recherche et filtres avancés
+- Infinite scroll
+- Authentification utilisateur
+- WebSocket pour mises à jour en temps réel
 
-## License
+## 📄 License
 
 MIT
