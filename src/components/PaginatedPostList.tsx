@@ -1,33 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { Tweet } from "@/data/subjects";
-import { TweetCard } from "@/components/TweetCard";
+import { Post } from "@/data/subjects";
+import { PostCard } from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-interface PaginatedTweetListProps {
-  tweets: Tweet[];
-  tweetsPerPage?: number;
+interface PaginatedPostListProps {
+  posts: Post[];
+  postsPerPage?: number;
 }
 
 /**
- * Client component that displays a paginated list of tweets
+ * Client component that displays a paginated list of posts
  */
-export function PaginatedTweetList({ tweets, tweetsPerPage = 5 }: PaginatedTweetListProps) {
+export function PaginatedPostList({ posts, postsPerPage = 5 }: PaginatedPostListProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Sort tweets by engagement (likes + retweets) descending
-  const sortedTweets = [...tweets].sort((a, b) => {
-    const engagementA = a.likes + a.retweets;
-    const engagementB = b.likes + b.retweets;
+  // Sort posts by engagement (likes + comments) descending
+  const sortedPosts = [...posts].sort((a, b) => {
+    const engagementA = a.likes + a.comments;
+    const engagementB = b.likes + b.comments;
     return engagementB - engagementA;
   });
 
-  const totalPages = Math.ceil(sortedTweets.length / tweetsPerPage);
-  const startIndex = (currentPage - 1) * tweetsPerPage;
-  const endIndex = startIndex + tweetsPerPage;
-  const currentTweets = sortedTweets.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const endIndex = startIndex + postsPerPage;
+  const currentPosts = sortedPosts.slice(startIndex, endIndex);
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
@@ -47,10 +47,10 @@ export function PaginatedTweetList({ tweets, tweetsPerPage = 5 }: PaginatedTweet
 
   return (
     <div className="space-y-4">
-      {/* Tweet cards with scroll container */}
+      {/* Post cards with scroll container */}
       <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-        {currentTweets.map((tweet) => (
-          <TweetCard key={tweet.id} tweet={tweet} />
+        {currentPosts.map((post) => (
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
 
@@ -98,7 +98,7 @@ export function PaginatedTweetList({ tweets, tweetsPerPage = 5 }: PaginatedTweet
       {/* Page info */}
       {totalPages > 1 && (
         <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
-          Showing {startIndex + 1}-{Math.min(endIndex, sortedTweets.length)} of {sortedTweets.length} tweets
+          Showing {startIndex + 1}-{Math.min(endIndex, sortedPosts.length)} of {sortedPosts.length} posts
         </p>
       )}
     </div>

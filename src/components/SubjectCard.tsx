@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, TrendingUp, ArrowRight } from "lucide-react";
-import { Subject, getPopularityLevel } from "@/data/subjects";
+import { MessageCircle, Users, ArrowRight } from "lucide-react";
+import { Subject, getCommunityLevel } from "@/data/subjects";
 
 interface SubjectCardProps {
   subject: Subject;
@@ -15,7 +15,7 @@ interface SubjectCardProps {
  * Card component displaying a regulatory subject with its stats
  */
 export function SubjectCard({ subject }: SubjectCardProps) {
-  const popularity = getPopularityLevel(subject.popularityScore);
+  const community = getCommunityLevel(subject.communitySize);
 
   return (
     <Link href={`/feed/${subject.slug}`}>
@@ -23,7 +23,7 @@ export function SubjectCard({ subject }: SubjectCardProps) {
         <CardHeader>
           <div className="flex items-start justify-between gap-2">
             <CardTitle className="text-xl">{subject.name}</CardTitle>
-            <Badge variant={popularity.color}>{popularity.label}</Badge>
+            <Badge variant={community.color}>{community.label}</Badge>
           </div>
           <CardDescription className="line-clamp-2">
             {subject.description}
@@ -34,11 +34,11 @@ export function SubjectCard({ subject }: SubjectCardProps) {
             <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
               <div className="flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" />
-                <span>{subject.tweetCount.toLocaleString()} tweets</span>
+                <span>~{subject.postCount.toLocaleString()} stories</span>
               </div>
               <div className="flex items-center gap-1">
-                <TrendingUp className="h-4 w-4" />
-                <span>{subject.popularityScore}%</span>
+                <Users className="h-4 w-4" />
+                <span>{(subject.communitySize / 1000).toFixed(0)}k members</span>
               </div>
             </div>
             <Button 

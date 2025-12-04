@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MessageCircle } from "lucide-react";
-import { getSubjectBySlug, getTweetsForSubject, subjects } from "@/data/subjects";
+import { getSubjectBySlug, getPostsForSubject, subjects } from "@/data/subjects";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PaginatedTweetList } from "@/components/PaginatedTweetList";
+import { PaginatedPostList } from "@/components/PaginatedPostList";
 import { GoogleTrendsEmbed } from "@/components/GoogleTrendsEmbed";
+import { PostsLegend } from "@/components/PostsLegend";
 
 interface FeedPageProps {
   params: Promise<{ topic: string }>;
@@ -34,14 +35,14 @@ export async function generateMetadata({ params }: FeedPageProps) {
   }
 
   return {
-    title: `${subject.name} Feed | Regulatory Feed`,
-    description: `Latest tweets and trends about ${subject.name}`,
+    title: `${subject.name} Feed | Tech Trends Feed`,
+    description: `Latest stories and trends about ${subject.name}`,
   };
 }
 
 /**
  * Page 2: /feed/[topic] - Feed page for a specific subject
- * Shows Google Trends embed and list of related tweets
+ * Shows Reddit Analytics and list of related posts from Reddit
  */
 export default async function FeedPage({ params }: FeedPageProps) {
   const { topic } = await params;
@@ -51,7 +52,8 @@ export default async function FeedPage({ params }: FeedPageProps) {
     notFound();
   }
 
-  const tweets = getTweetsForSubject(topic);
+  // Fetch real stories from Reddit API
+  const posts = await getPostsForSubject(topic);
 
   // Get other subject names for Google Trends comparison
   const compareTopics = subjects
@@ -78,7 +80,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
             </h1>
             <Badge variant="secondary" className="text-sm">
               <MessageCircle className="h-3 w-3 mr-1" />
-              {subject.tweetCount.toLocaleString()} tweets
+              {posts.length} live stories
             </Badge>
           </div>
           <p className="text-zinc-600 dark:text-zinc-400">
@@ -86,25 +88,30 @@ export default async function FeedPage({ params }: FeedPageProps) {
           </p>
         </header>
 
-        {/* Google Trends section */}
+        {/* Reddit Analytics section */}
         <section className="mb-8">
-          <GoogleTrendsEmbed topic={subject.name} compareTopics={compareTopics} />
+          <GoogleTrendsEmbed topic={subject.name} compareTopics={compareTopics} posts={posts} />
         </section>
 
-        {/* Tweets section */}
+        {/* Posts section */}
         <section>
-          <h2 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-            Popular Tweets
-          </h2>
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
+              Hot Posts from Reddit
+            </h2>
+            
+            {/* Collapsible legend for post cards */}
+            <PostsLegend />
+          </div>
           
-          {tweets.length > 0 ? (
-            <PaginatedTweetList tweets={tweets} tweetsPerPage={5} />
+          {posts.length > 0 ? (
+            <PaginatedPostList posts={posts} postsPerPage={5} />
           ) : (
             /* Empty state */
             <div className="text-center py-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900">
               <MessageCircle className="h-12 w-12 mx-auto text-zinc-400 mb-4" />
               <p className="text-zinc-500 dark:text-zinc-400">
-                No tweets available for this topic yet.
+                No stories available for this topic yet.
               </p>
               <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1">
                 Check back later for updates.
